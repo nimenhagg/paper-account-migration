@@ -1,6 +1,7 @@
 target/
 *.class
 *.jar
+!libs/*.jar
 .idea/
 *.iml
 .vscode/
