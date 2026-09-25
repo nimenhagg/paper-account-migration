@@ -1,0 +1,17 @@
+# PaperAccountMigration Configuration
+
+security:
+  # Maximum failed password attempts before locking out the IP
+  max-failed-attempts: 5
+  # Lockout duration in minutes
+  lockout-minutes: 10
+
+prompts:
+  # Enable interactive chat GUI login and register prompts
+  enable-chat-prompts: true
+  # Prompt interval in seconds while player is not logged in
+  prompt-interval-seconds: 10
+
+backup:
+  # Create a timestamped backup before performing any data migration
+  enable-backup: true

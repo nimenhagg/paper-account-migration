@@ -1,0 +1,26 @@
+name: PaperAccountMigration
+version: 1.0.0
+main: com.server.migration.PaperAccountMigration
+api-version: '1.21'
+description: Interactive login GUI prompts and self-service account data migration for offline-mode Paper servers.
+author: Codex
+depend: [LoginSecurity]
+softdepend: [Multiverse-Inventories, Slimefun, CoreProtect, MojangTexturesInjector]
+
+commands:
+  migrateaccount:
+    description: Migrate your old account data to your current username
+    aliases: [migrate, accountmigrate]
+    permission: accountmigration.use
+
+  migrationadmin:
+    description: Account migration administration commands
+    permission: accountmigration.admin
+
+permissions:
+  accountmigration.use:
+    description: Allows players to migrate their accounts
+    default: true
+  accountmigration.admin:
+    description: Administrative commands for account migration
+    default: op
