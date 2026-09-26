@@ -41,6 +41,13 @@ public class MigrationManager {
         this.serverDir = plugin.getServer().getWorldContainer();
     }
 
+    public MigrationManager(File serverDir, Logger logger, MigrationAuditLogger auditLogger) {
+        this.plugin = null;
+        this.logger = logger != null ? logger : Logger.getLogger("MigrationManager");
+        this.auditLogger = auditLogger;
+        this.serverDir = serverDir;
+    }
+
     public MigrationResult performMigration(Player player, String oldUsername, String oldPassword) {
         String newUsername = player.getName();
         String newUuid = player.getUniqueId().toString();
@@ -136,6 +143,15 @@ public class MigrationManager {
             auditLogger.log(ip, newUsername, newUuid, oldUsername, oldUuid, false, "Fatal exception: " + e.getMessage());
             return new MigrationResult(false, "迁移过程中出现异常: " + e.getMessage() + "，请联系管理员查看备份。");
         }
+    }
+
+    public void recordFailedAttempt(String ip) {
+        handleFailedAttempt(ip);
+    }
+
+    public boolean isLockedOut(String ip) {
+        Long exp = lockoutExpiry.get(ip);
+        return exp != null && exp > System.currentTimeMillis();
     }
 
     private void handleFailedAttempt(String ip) {
