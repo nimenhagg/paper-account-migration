@@ -147,6 +147,28 @@ public class MigrationManager {
         }
     }
 
+    public boolean resetLockout(String ip) {
+        boolean hadFailed = failedAttempts.remove(ip) != null;
+        boolean hadExpiry = lockoutExpiry.remove(ip) != null;
+        return hadFailed || hadExpiry;
+    }
+
+    public void clearAllLockouts() {
+        failedAttempts.clear();
+        lockoutExpiry.clear();
+    }
+
+    public Map<String, Long> getActiveLockouts() {
+        long now = System.currentTimeMillis();
+        Map<String, Long> active = new HashMap<>();
+        for (Map.Entry<String, Long> entry : lockoutExpiry.entrySet()) {
+            if (entry.getValue() > now) {
+                active.put(entry.getKey(), (entry.getValue() - now) / 1000);
+            }
+        }
+        return active;
+    }
+
     private OldAccountRecord findOldAccount(File dbFile, String username) {
         String url = "jdbc:sqlite:" + dbFile.getAbsolutePath();
         try (Connection conn = DriverManager.getConnection(url);
